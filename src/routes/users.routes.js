@@ -1,22 +1,25 @@
-const { Router } = require('express')
-// pegando o Router do express e colocando aqui.
+const { Router, response } = require("express");
+const multer = require('multer')
+// para poder carregar essa imagem
+const uploadConfig = require('../configs/upload')
+
 
 const UsersController = require('../controllers/UsersController')
-// para utilizar a class construtora aqui e suas funções
-
-const usersController = new UsersController();
-// iniciar a class construtora
+const UserAvatarController = require('../controllers/UserAvatarController')
+const ensureAuthenticated = require('../middlewares/ensureAuthenticated')
 
 const usersRoutes = Router();
-// iniciar o Router para eu poder utilizar ele.
+const upload = multer(uploadConfig.MULTER);
+// vai ser o nss multer, e passar as configurações do nss upload
 
-function myMiddleware( request, response, next ){
-    console.log('Você passou pelo Middleware!')
+const usersController = new UsersController();
+const userAvatarController = new UserAvatarController();
 
-    next()
-}
+usersRoutes.post("/", usersController.create);
+usersRoutes.put("/", ensureAuthenticated, usersController.update);
+// put atualizar varias coisas
+usersRoutes.patch("/avatar", ensureAuthenticated, upload.single("avatar"),userAvatarController.update)
+// patch atualizar propriedades de determindo produto expecifico no banco de dados
+// foi no '/avatar', passou pelo middlewares pra ver se tava autenticado, depois faz o upload da imagem e então leva a imagem para a pasta de upload e cadastrar no banco.
 
-usersRoutes.post("/", myMiddleware, usersController.create)
-usersRoutes.put("/:id", myMiddleware, usersController.update)
-
-module.exports = usersRoutes;
+module.exports = usersRoutes; 

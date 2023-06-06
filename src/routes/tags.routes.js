@@ -1,21 +1,18 @@
-const { Router } = require('express')
-// pegando o Router do express e colocando aqui.
+const { Router } = require("express");
+// lidar com requisições feita na web, pelo protocolo http, muito rapido e flexivel
 
 const TagsController = require('../controllers/TagsController')
-// para utilizar a class construtora aqui e suas funções
-
-const tagsController = new TagsController();
-// iniciar a class construtora
+// trazendo tudo do arquivo TagsController.js para cá
+const ensureAuthenticated = require('../middlewares/ensureAuthenticated')
 
 const tagsRoutes = Router();
-// iniciar o Router para eu poder utilizar ele.
+// utilizando o Router que vem do express
 
-function myMiddleware( request, response, next ){
-    console.log('Você passou pelo Middleware!')
+const tagsController = new TagsController();
+// criando a class contrutora
 
-    next()
-} 
+tagsRoutes.get("/",ensureAuthenticated, tagsController.index);
+// listar todas as notas cadastradas
 
-tagsRoutes.get("/:user_id", myMiddleware, tagsController.index)
 
 module.exports = tagsRoutes;

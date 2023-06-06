@@ -1,24 +1,24 @@
-const { Router } = require('express')
-// pegando o Router do express e colocando aqui.
+const { Router } = require("express");
 
-const NotesController = require('../controllers/NotesController')
-// para utilizar a class construtora aqui e suas funções
-
-const notesController = new NotesController();
-// iniciar a class construtora
+const NotesController = require('../controllers/NoteController')
+const ensureAuthenticated = require('../middlewares/ensureAuthenticated')
 
 const notesRoutes = Router();
-// iniciar o Router para eu poder utilizar ele.
 
-function myMiddleware( request, response, next ){
-    console.log('Você passou pelo Middleware!')
+const notesController = new NotesController();
 
-    next()
-} 
+notesRoutes.use(ensureAuthenticated)
 
-notesRoutes.get("/", myMiddleware, notesController.index)
-notesRoutes.post("/:user_id", myMiddleware, notesController.create)
-notesRoutes.get("/:id", myMiddleware, notesController.show)
-notesRoutes.delete("/:id", myMiddleware, notesController.delete)
+notesRoutes.get("/", notesController.index);
+// listar todas as notas cadastradas
+
+notesRoutes.post("/", notesController.create);
+// criar uma nota
+
+notesRoutes.get("/:id", notesController.show);
+// mostrar a nota
+
+notesRoutes.delete("/:id", notesController.delete);
+// deletar uma nota
 
 module.exports = notesRoutes;

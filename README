@@ -27,3 +27,8 @@ Middleware: Vai ficar chamando infinitamente, caso você não diga o próximo pa
 Migrations: (GitHub) É uma forma de versionar a base de dados. Migrations trabalha na manipulação da base de dados, criando, alterando ou removendo. 
 Up - método responsável para criar ou alterar algo no banco de dados
 Down - responsável pelo rollback. Ou seja, desfazer as alterações realizadas pela migration.
+
+JWT: (Json Web Token) - É um padrão de mercado que define um token no formato Json para troca de iinformações entre a nossa aplicação e nossa API(BackEnd), composto por 3 partes;
+- Header. Algoritmo que vai gerar ( frase bem grandona) e o tipo do token que está sendo utilizado(JWT)
+- Payload. Conteúdo do Token, normalmente só o necessário(id já é o suficiente porque com ele consegue acessar o resto)
+- Verify Signature. Garante a integridade do token
